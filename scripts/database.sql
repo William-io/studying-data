@@ -1,45 +1,45 @@
 /*
   Criação das Tabelas
 */
-/* Regions */
-CREATE TABLE regions (
-  region_id NUMBER CONSTRAINT regions_id_nn NOT NULL,
-  region_name VARCHAR2(25)
+/* Estado  */
+CREATE TABLE states (
+  state_id NUMBER CONSTRAINT states_id_nn NOT NULL,
+  state_name VARCHAR2(25)
 );
 CREATE UNIQUE INDEX reg_id_pk
-ON regions (region_id);
-ALTER TABLE regions
+ON states (state_id);
+ALTER TABLE states
 ADD CONSTRAINT reg_id_pk
-PRIMARY KEY (region_id);
+PRIMARY KEY (state_id);
 
-/* Countries */
-CREATE TABLE countries (
-  country_id CHAR(2) CONSTRAINT  country_id_nn NOT NULL,
-  country_name VARCHAR2(40),
-  region_id NUMBER,
-  CONSTRAINT country_c_id_pk PRIMARY KEY (country_id)
+/* Municipio */
+CREATE TABLE counties (
+  county_id CHAR(2) CONSTRAINT  county_id_nn NOT NULL,
+  county_name VARCHAR2(40),
+  state_id NUMBER,
+  CONSTRAINT county_c_id_pk PRIMARY KEY (county_id)
 )
 ORGANIZATION INDEX;
-ALTER TABLE countries
+ALTER TABLE counties
 ADD CONSTRAINT countr_reg_fk
-FOREIGN KEY (region_id)
-REFERENCES regions(region_id);
+FOREIGN KEY (state_id)
+REFERENCES states(state_id);
 
-/* Locations */
+/* Localizacao/bairro */
 CREATE TABLE locations (
   location_id    NUMBER(4),
   street_address VARCHAR2(40),
   postal_code    VARCHAR2(12),
   city       VARCHAR2(30) CONSTRAINT loc_city_nn  NOT NULL,
   state_province VARCHAR2(25),
-  country_id     CHAR(2)
+  county_id     CHAR(2)
 );
 CREATE UNIQUE INDEX loc_id_pk
 ON locations (location_id);
 ALTER TABLE locations
 ADD (
     CONSTRAINT loc_id_pk PRIMARY KEY (location_id),
-    CONSTRAINT loc_c_id_fk FOREIGN KEY (country_id) REFERENCES countries(country_id)
+    CONSTRAINT loc_c_id_fk FOREIGN KEY (county_id) REFERENCES counties(county_id)
 );
 CREATE SEQUENCE locations_seq
   START WITH     3300
@@ -92,11 +92,11 @@ CREATE TABLE users (
   phone_number   VARCHAR2(20),
   hire_date      DATE CONSTRAINT us_hire_date_nn  NOT NULL,
   course_id         VARCHAR2(10) CONSTRAINT us_course_nn  NOT NULL,
-  price         NUMBER(8,2),
+  spending         NUMBER(8,2),
   commission_pct NUMBER(2,2),
   manager_id     NUMBER(6),
   category_id  NUMBER(4),
-  CONSTRAINT     us_price_min CHECK (price > 0),
+  CONSTRAINT     us_spending_min CHECK (spending > 0),
   CONSTRAINT     us_email_uk UNIQUE (email)
 );
 CREATE UNIQUE INDEX us_us_id_pk
@@ -156,17 +156,17 @@ CREATE OR REPLACE VIEW us_details_view
    manager_id,
    category_id,
    location_id,
-   country_id,
+   county_id,
    first_name,
    last_name,
-   price,
+   spending,
    commission_pct,
    category_title,
    course_title,
    city,
    state_province,
-   country_name,
-   region_name)
+   county_name,
+   state_name)
 AS
 SELECT
   e.user_id,
@@ -174,23 +174,23 @@ SELECT
   e.manager_id,
   e.category_id,
   d.location_id,
-  l.country_id,
+  l.county_id,
   e.first_name,
   e.last_name,
-  e.price,
+  e.spending,
   e.commission_pct,
   d.category_title,
   j.course_title,
   l.city,
   l.state_province,
-  c.country_name,
-  r.region_name
+  c.county_name,
+  r.state_name
 FROM
   users e
   INNER JOIN categories d ON e.category_id = d.category_id
   INNER JOIN courses j ON j.course_id = e.course_id
   INNER JOIN locations l ON d.location_id = l.location_id
-  INNER JOIN countries c ON l.country_id = c.country_id
-  INNER JOIN regions r ON c.region_id = r.region_id
+  INNER JOIN counties c ON l.county_id = c.county_id
+  INNER JOIN states r ON c.state_id = r.state_id
 WITH READ ONLY;
 COMMIT;
