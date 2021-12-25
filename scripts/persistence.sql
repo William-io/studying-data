@@ -1,0 +1,115 @@
+-- INSERT INTO STATES(
+--     STATE_ID,
+--     STATE_NAME
+--   )
+-- VALUES
+--   (
+--     1,
+--     'Ceará'
+--   );
+
+
+-- INSERT INTO COUNTIES(
+--     COUNTY_ID,
+--     COUNTY_NAME,
+--     STATE_ID
+--   )
+-- VALUES
+--   (
+--     'FO',
+--     'Fortaleza',
+--     1
+--   );
+
+-- INSERT INTO LOCATIONS(
+--     LOCATION_ID,
+--     STREET_ADDRESS,
+--     POSTAL_CODE,
+--     CITY,
+--     STATE_PROVINCE,
+--     COUNTY_ID
+--   )
+-- VALUES
+--   (
+--     1000,
+--     'Professor Teodorico',
+--     '60421-010',
+--     'Fortaleza',
+--     'Ceará',
+--     'FO'
+--   );
+
+-- ALTER TABLE CATEGORIES DISABLE CONSTRAINT dept_mgr_fk;
+-- INSERT INTO CATEGORIES(
+--     CATEGORY_ID,
+--     CATEGORY_TITLE,
+--     MANAGER_ID,
+--     LOCATION_ID
+--   )
+-- VALUES
+--   (
+--     10,
+--     'SQL Oracle',
+--     NULL,
+--     1000
+--   );
+
+-- INSERT INTO COURSES(
+--     COURSE_ID,
+--     COURSE_TITLE,
+--     MIN_PRICE,
+--     MAX_PRICE
+--   )
+-- VALUES
+--   (
+--     'AC_PUBLIC',
+--     'Aprenda a programar em SQL',
+--     400,
+--     600
+--   );
+
+-- INSERT INTO USERS(
+--     USER_ID,
+--     FIRST_NAME,
+--     LAST_NAME,
+--     EMAIL,
+--     PHONE_NUMBER,
+--     HIRE_DATE,
+--     COURSE_ID,
+--     SPENDING,
+--     COMMISSION_PCT,
+--     MANAGER_ID,
+--     CATEGORY_ID
+--   )
+-- VALUES
+--   (
+--     100,
+--     'William',
+--     'G.Silva',
+--     'capuletos@live.com',
+--     '85988-1234',
+--     TO_DATE('01/01/2019', 'dd-MM-yyyy'),
+--     'AC_PUBLIC',
+--     24000,
+--     NULL,
+--     NULL,
+--     10
+--   );
+
+-- INSERT INTO COURSE_HISTORY(
+--     USER_ID,
+--     START_DATE,
+--     END_DATE,
+--     COURSE_ID,
+--     CATEGORY_ID
+--   )
+-- VALUES
+--   (
+--     100,
+--     TO_DATE('13-01-2001', 'dd-MM-yyyy'),
+--     TO_DATE('24-07-2006', 'dd-MM-yyyy'),
+--     'AC_PUBLIC',
+--     10
+--   );
+
+
